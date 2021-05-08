@@ -11,7 +11,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   var email;
   var password;
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -108,15 +107,6 @@ class _LoginPageState extends State<LoginPage> {
   // );
   // }
   _showMsg(msg) {
-    // final snackBar = SnackBar(
-    //   content: Text(msg),
-    //   action: SnackBarAction(
-    //     label: 'Close',
-    //     onPressed: () {
-    //       // Some code to undo the change!
-    //     },
-    //   ),
-    // );
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(msg),
       action: SnackBarAction(
@@ -126,7 +116,6 @@ class _LoginPageState extends State<LoginPage> {
         },
       ),
     ));
-    //_scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
   void _login() async {
@@ -135,11 +124,11 @@ class _LoginPageState extends State<LoginPage> {
     // });
     var data = {'email': email, 'password': password};
 
-    var res = await Network().getData('/orders');
-    //var users = await Network().getData('/users');
+    var response = await Network().getData('/orders');
 
-    if (res.statusCode == 200) {
-      //var body = json.decode(res.body);
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+      _showMsg(response.body);
       //SharedPreferences localStorage = await SharedPreferences.getInstance();
       // localStorage.setString('token', json.encode(body['token']));
       // localStorage.setString('user', json.encode(body['user']));
@@ -148,9 +137,9 @@ class _LoginPageState extends State<LoginPage> {
       //   new MaterialPageRoute(builder: (context) => Home()),
       // );
       //_showMsg(body['message']);
-      _showMsg(res.body);
+
     } else {
-      _showMsg('Error ${res.statusCode}');
+      _showMsg('Error ${response.statusCode}');
     }
 
     // setState(() {
