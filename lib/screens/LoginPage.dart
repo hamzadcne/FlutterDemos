@@ -69,8 +69,10 @@ class _LoginPageState extends State<LoginPage> {
         if (emailValue.isEmpty) {
           return 'Please enter email';
         }
-        email = emailValue;
         return null;
+      },
+      onChanged: (value) {
+        email = value;
       },
     );
   }
@@ -82,18 +84,23 @@ class _LoginPageState extends State<LoginPage> {
         if (passwordValue.isEmpty) {
           return 'Please enter password';
         }
-        password = passwordValue;
+
         return null;
+      },
+      onChanged: (value) {
+        password = value;
       },
     );
   }
 
   Widget _buildSubmitButton() {
-    return RaisedButton(
+    return ElevatedButton(
       onPressed: () {
         _login();
       },
-      color: Colors.blueAccent[200],
+      style: ElevatedButton.styleFrom(
+        primary: Colors.blue,
+      ),
       child: Text(
         'LOGIN',
         style: TextStyle(color: Colors.white),
