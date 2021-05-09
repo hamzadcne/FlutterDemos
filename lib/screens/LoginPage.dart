@@ -79,6 +79,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildPasswordField() {
     return TextFormField(
+      obscureText: true,
       decoration: InputDecoration(labelText: 'Password'),
       validator: (passwordValue) {
         if (passwordValue.isEmpty) {
@@ -133,11 +134,15 @@ class _LoginPageState extends State<LoginPage> {
     // });
     var data = {'email': email, 'password': password};
 
-    var response = await Network().getData('/orders');
+    // var map = new Map<String, dynamic>();
+    // map['email'] = email;
+    // map['password'] = password;
+    var response = await Network().postData(data, '/orders');
 
     if (response.statusCode == 200) {
-      var body = json.decode(response.body);
+      //var body = json.decode(response.body);
       _showMsg(response.body);
+
       //SharedPreferences localStorage = await SharedPreferences.getInstance();
       // localStorage.setString('token', json.encode(body['token']));
       // localStorage.setString('user', json.encode(body['user']));

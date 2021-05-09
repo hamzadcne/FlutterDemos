@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class Network {
-  final String _url = 'http://192.168.1.5:8000/api';
+  final String _url = 'http://192.168.1.3:8000/api';
   //if you are using android studio emulator, change localhost to 10.0.2.2
   var token;
 
@@ -17,6 +17,12 @@ class Network {
         body: jsonEncode(data), headers: _setHeaders());
   }
 
+  postFormData(data, apiUrl) async {
+    var fullUrl = _url + apiUrl;
+    return await http.post(Uri.parse(fullUrl),
+        body: data, headers: _setFormHeaders());
+  }
+
   getData(apiUrl) async {
     var fullUrl = _url + apiUrl;
     //await _getToken();
@@ -25,6 +31,11 @@ class Network {
 
   _setHeaders() => {
         'Content-type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token'
+      };
+  _setFormHeaders() => {
+        'Content-type': 'application/x-www-form-urlencoded',
         'Accept': 'application/json',
         'Authorization': 'Bearer $token'
       };
