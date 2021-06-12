@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:hello_world/utils/api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -17,6 +18,11 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: Text('Login'),
+      ),
       body: _buildLoginLayout(),
     );
   }
@@ -137,15 +143,15 @@ class _LoginPageState extends State<LoginPage> {
     // var map = new Map<String, dynamic>();
     // map['email'] = email;
     // map['password'] = password;
-    var response = await Network().postData(data, '/orders');
+    var response = await Network().postData(data, '/login');
 
     if (response.statusCode == 200) {
-      //var body = json.decode(response.body);
+      var body = json.decode(response.body);
       _showMsg(response.body);
 
-      //SharedPreferences localStorage = await SharedPreferences.getInstance();
-      // localStorage.setString('token', json.encode(body['token']));
-      // localStorage.setString('user', json.encode(body['user']));
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      localStorage.setString('token', json.encode(body['token']));
+      localStorage.setString('user', json.encode(body['user']));
       // Navigator.push(
       //   context,
       //   new MaterialPageRoute(builder: (context) => Home()),

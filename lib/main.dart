@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hello_world/screens/AddMealView.dart';
+import 'package:hello_world/screens/MealsListView.dart';
+import 'package:hello_world/utils/SharedPreferencesManager.dart';
 
 import 'screens/LoginPage.dart';
 
@@ -24,7 +27,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: LoginPage(), // MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -49,6 +52,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  var loginText = '';
+  var sharedPreferencesManager = new SharedPreferencesManager();
 
   void _incrementCounter() {
     setState(() {
@@ -59,6 +64,25 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+
+  _checkLoggedInUser() async {
+    var token = await sharedPreferencesManager.getAuthToken();
+    if (token != null) {
+      var user = await sharedPreferencesManager.getCurrentUser();
+      setState(() {
+        loginText = 'Welcome ' + user['email'];
+      });
+    } else
+      setState(() {
+        loginText = 'No user logged in';
+      });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _checkLoggedInUser());
   }
 
   @override
@@ -74,6 +98,52 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+      ),
+      drawer: Drawer(
+        // Add a ListView to the drawer. This ensures the user can scroll
+        // through the options in the drawer if there isn't enough vertical
+        // space to fit everything.
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(loginText),
+            ),
+            ListTile(
+              title: Text('Login'),
+              onTap: () {
+                Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()))
+                    .then((_) => _checkLoggedInUser());
+              },
+            ),
+            // ListTile(
+            //   title: Text('Add meal'),
+            //   onTap: () {
+            //     Navigator.push(context,
+            //         MaterialPageRoute(builder: (context) => AddMealView()));
+            //   },
+            // ),
+            ListTile(
+              title: Text('Meals (with images)'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MealsListView()));
+              },
+            ),
+            ListTile(
+              title: Text('GPS'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+          ],
+        ),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
