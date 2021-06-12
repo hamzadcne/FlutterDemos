@@ -12,9 +12,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   var email;
   var password;
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController birthdayController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -157,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
       //   new MaterialPageRoute(builder: (context) => Home()),
       // );
       //_showMsg(body['message']);
-
+      Navigator.pop(context);
     } else {
       _showMsg('Error ${response.statusCode}');
     }

@@ -16,7 +16,6 @@ class _AddMealState extends State<AddMealView> {
   var category_id = 1;
   var restaurant_id = 1;
   var price;
-  var photo;
 
   File _image;
   final picker = ImagePicker();
@@ -144,10 +143,6 @@ class _AddMealState extends State<AddMealView> {
     } else {
       _showMsg('Error ${response.statusCode}');
     }
-
-    // setState(() {
-    //   _isLoading = false;
-    // });
   }
 
   _showMsg(msg) {

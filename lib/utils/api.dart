@@ -26,6 +26,7 @@ class Network {
 
   postDataWithImage(data, apiUrl, filepath) async {
     var fullUrl = _baseUrl + apiUrl;
+
     Map<String, String> headers = {
       'Content-Type': 'multipart/form-data',
       'Accept': 'application/json',
